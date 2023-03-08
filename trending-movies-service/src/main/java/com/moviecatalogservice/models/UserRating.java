@@ -1,10 +1,15 @@
 package com.moviecatalogservice.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
+@Entity
 public class UserRating {
-
-    private String userId;
+    @Id
+    private String ID;
+    @OneToMany(targetEntity = Rating.class)
     private List<Rating> ratings;
 
     public UserRating() {
@@ -20,13 +25,5 @@ public class UserRating {
 
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 }
