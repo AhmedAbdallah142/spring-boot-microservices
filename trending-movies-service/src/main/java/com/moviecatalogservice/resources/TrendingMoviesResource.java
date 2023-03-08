@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/trending")
-public class MovieCatalogResource {
+public class TrendingMoviesResource {
 
     private final RestTemplate restTemplate;
 
@@ -22,9 +22,9 @@ public class MovieCatalogResource {
 
     private final UserRatingService userRatingService;
 
-    public MovieCatalogResource(RestTemplate restTemplate,
-                                MovieInfoService movieInfoService,
-                                UserRatingService userRatingService) {
+    public TrendingMoviesResource(RestTemplate restTemplate,
+                                  MovieInfoService movieInfoService,
+                                  UserRatingService userRatingService) {
 
         this.restTemplate = restTemplate;
         this.movieInfoService = movieInfoService;
@@ -35,10 +35,9 @@ public class MovieCatalogResource {
      * Makes a call to MovieInfoService to get movieId, name and description,
      * Makes a call to RatingsService to get ratings
      * Accumulates both data to create a MovieCatalog
-     * @param userId
      * @return CatalogItem that contains name, description and rating
      */
-    @RequestMapping("/top10")
+    @RequestMapping("/top10Movie")
     public List<CatalogItem> getTop10TrendingMovies(@PathVariable String userId) {
         List<Rating> ratings = userRatingService.getUserRating(userId).getRatings();
         return ratings.stream().map(movieInfoService::getCatalogItem).collect(Collectors.toList());
