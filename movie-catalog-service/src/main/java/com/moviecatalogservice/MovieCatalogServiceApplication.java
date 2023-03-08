@@ -23,7 +23,6 @@ public class MovieCatalogServiceApplication {
     public RestTemplate getRestTemplate() {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         clientHttpRequestFactory.setConnectTimeout(TIMEOUT);   // Set the timeout to 3 seconds
-
         return new RestTemplate(clientHttpRequestFactory);
     }
 
