@@ -1,8 +1,15 @@
 package com.example.ratingsservice.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
+@Entity
 public class UserRating {
+    @Id
+    private String ID;
+    @OneToMany(targetEntity = Rating.class)
     private List<Rating> ratings;
 
     public UserRating() {
