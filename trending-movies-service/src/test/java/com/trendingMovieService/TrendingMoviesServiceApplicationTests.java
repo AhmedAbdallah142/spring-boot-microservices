@@ -1,4 +1,4 @@
-package com.moviecatalogservice;
+package com.trendingMovieService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
