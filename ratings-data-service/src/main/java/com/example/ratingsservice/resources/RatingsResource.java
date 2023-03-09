@@ -24,7 +24,7 @@ public class RatingsResource {
     }
 
     @RequestMapping("/top10Movies")
-    public List<TrendingMovies> top10Movies() {
-        return userRatingsRepository.findTop10MovieRating();
+    public TrendingMovies top10Movies() {
+        return new TrendingMovies(userRatingsRepository.findTop10MovieRating());
     }
 }
