@@ -1,4 +1,4 @@
-package com.moviecatalogservice.models;
+package com.example.ratingsservice.models;
 
 public interface MovieRatingResult {
 

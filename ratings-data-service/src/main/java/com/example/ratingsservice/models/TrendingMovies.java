@@ -1,9 +1,12 @@
-package com.moviecatalogservice.models;
+package com.example.ratingsservice.models;
 
 import java.util.List;
 
 public class TrendingMovies {
     List<MovieRatingResult> movieRatings;
+
+    public TrendingMovies() {
+    }
 
     public TrendingMovies(List<MovieRatingResult> movieRatings) {
         this.movieRatings = movieRatings;

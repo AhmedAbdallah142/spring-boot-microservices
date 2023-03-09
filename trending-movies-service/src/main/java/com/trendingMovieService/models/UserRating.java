@@ -1,4 +1,4 @@
-package com.moviecatalogservice.models;
+package com.trendingMovieService.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

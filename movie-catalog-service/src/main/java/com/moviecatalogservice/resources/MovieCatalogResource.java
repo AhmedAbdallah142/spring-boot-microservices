@@ -4,15 +4,17 @@ import com.moviecatalogservice.models.*;
 import com.moviecatalogservice.services.MovieInfoService;
 import com.moviecatalogservice.services.TrendingMovieService;
 import com.moviecatalogservice.services.UserRatingService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.trendingGrpc.TrendingRequest;
+import com.trendingGrpc.TrendingResponse;
+import com.trendingGrpc.TrendingServiceGrpc;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,5 +57,14 @@ public class MovieCatalogResource {
     @RequestMapping("/top10Movies")
     public TrendingMovies getTrendingMovies() {
         return trendingMovieService.getTop10TrendingMovie();
+    }
+
+    private final int SERVER_PORT = 9090;
+    @RequestMapping("/top10MoviesTest")
+    public String top10Movies() {
+        ManagedChannel managedChannel = ManagedChannelBuilder.forAddress("localhost", SERVER_PORT).usePlaintext().build();
+        TrendingServiceGrpc.TrendingServiceBlockingStub trendingServiceBlockingStub = TrendingServiceGrpc.newBlockingStub(managedChannel);
+        TrendingRequest trendingRequest = TrendingRequest.newBuilder().build();
+        return trendingServiceBlockingStub.getTop10Movies(trendingRequest).toString();
     }
 }
