@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,11 +61,17 @@ public class MovieCatalogResource {
     }
 
     private final int SERVER_PORT = 9090;
+
     @RequestMapping("/top10MoviesTest")
-    public String top10Movies() {
+    public List<Movie> top10Movies() {
         ManagedChannel managedChannel = ManagedChannelBuilder.forAddress("localhost", SERVER_PORT).usePlaintext().build();
         TrendingServiceGrpc.TrendingServiceBlockingStub trendingServiceBlockingStub = TrendingServiceGrpc.newBlockingStub(managedChannel);
         TrendingRequest trendingRequest = TrendingRequest.newBuilder().build();
-        return trendingServiceBlockingStub.getTop10Movies(trendingRequest).toString();
+        TrendingResponse response = trendingServiceBlockingStub.getTop10Movies(trendingRequest);
+        List<Movie> top10 = new LinkedList<>();
+        for (String movieId : response.getMovieIdList()) {
+            top10.add(movieInfoService.getMovieItem(movieId));
+        }
+        return top10;
     }
 }

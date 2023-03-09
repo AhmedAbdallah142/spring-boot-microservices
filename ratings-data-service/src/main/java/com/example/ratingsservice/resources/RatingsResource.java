@@ -1,6 +1,5 @@
 package com.example.ratingsservice.resources;
 
-import com.example.ratingsservice.models.Rating;
 import com.example.ratingsservice.models.TrendingMovies;
 import com.example.ratingsservice.models.UserRating;
 import com.example.ratingsservice.models.UserRatingsRepository;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

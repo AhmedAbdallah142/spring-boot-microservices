@@ -20,8 +20,8 @@ public class MovieInfoService {
     @HystrixCommand(fallbackMethod = "getFallbackCatalogItem",
             threadPoolKey = "movieInfoPool",
             threadPoolProperties = {
-                @HystrixProperty(name = "coreSize", value = "20"),  // Size of thread pool
-                @HystrixProperty(name = "maxQueueSize", value = "10")   // Waiting in thread queue
+                    @HystrixProperty(name = "coreSize", value = "20"),  // Size of thread pool
+                    @HystrixProperty(name = "maxQueueSize", value = "10")   // Waiting in thread queue
             },
             commandProperties = {
                     // Time to cause timeout
@@ -32,7 +32,7 @@ public class MovieInfoService {
                     @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
                     // Wait/Sleep for 5 seconds before sending another request to the failed service
                     @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
-    })
+            })
     public CatalogItem getCatalogItem(Rating rating) {
         String movieDetailsUrl = "http://movie-info-service/movies/" + rating.getMovieId();
         Movie movie = this.restTemplate.getForObject(movieDetailsUrl, Movie.class);
@@ -42,4 +42,31 @@ public class MovieInfoService {
     public CatalogItem getFallbackCatalogItem(Rating rating) {
         return new CatalogItem("Movie name not found", "", rating.getRating());
     }
+
+    @HystrixCommand(fallbackMethod = "getFallbackMovieItem",
+            threadPoolKey = "movieInfoPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "20"),  // Size of thread pool
+                    @HystrixProperty(name = "maxQueueSize", value = "10")   // Waiting in thread queue
+            },
+            commandProperties = {
+                    // Time to cause timeout
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+                    // N, Hystrix looks at (analyzes) last N requests.
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
+                    // if >= 50 percent of the last N requests fail, break the circuit
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+                    // Wait/Sleep for 5 seconds before sending another request to the failed service
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+            })
+    public Movie getMovieItem(String movieId) {
+        String movieDetailsUrl = "http://movie-info-service/movies/" + movieId;
+        return this.restTemplate.getForObject(movieDetailsUrl, Movie.class);
+    }
+
+    public Movie getFallbackMovieItem(Rating rating) {
+        return new Movie("0", "Movie name not found", "");
+    }
+
+
 }
