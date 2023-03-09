@@ -64,8 +64,8 @@ public class MovieInfoService {
         return this.restTemplate.getForObject(movieDetailsUrl, Movie.class);
     }
 
-    public Movie getFallbackMovieItem(Rating rating) {
-        return new Movie("0", "Movie name not found", "");
+    public Movie getFallbackMovieItem(String id) {
+        return new Movie(id, "Movie name not found", "");
     }
 
 
